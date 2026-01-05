@@ -1,0 +1,11 @@
+prefix=/root/MLOps-Network-Security-System/venv
+exec_prefix=/root/MLOps-Network-Security-System/venv
+libdir=/root/MLOps-Network-Security-System/venv/lib
+includedir=/root/MLOps-Network-Security-System/venv/include
+
+Name: uuid
+Description: Universally unique id library
+Version: 2.32.1
+Requires:
+Cflags: -I${includedir}/uuid
+Libs: -L${libdir} -luuid
