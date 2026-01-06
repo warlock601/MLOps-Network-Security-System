@@ -102,3 +102,51 @@ Repository for building an end-to-end MLOps solution for a Network Security syst
   A list of packages will get created in the project file structure.</br>
   <img width="262" height="216" alt="image" src="https://github.com/user-attachments/assets/7db04aca-b875-4f1b-98f5-b460f6483bf1" />   </br>
   ** Right now we will comment "-e." as we will require it at the end of the project.
+
+
+
+- Inside networksecurity > logging directory, logging.py is created, and the following logic is added
+  ```bash
+  import logging
+  import os
+  from datetime import datetime
+
+  LOG_FILE=f"{datetime.now().strftime('%m_%d_%Y_%H_%M_%S')}".log"
+
+  logs_path=os.path.join(os.getcwd(),"logs",LOG_FILE)
+  os.makedirs(logs_path,exist_ok=True)
+
+  LOG_FILE_PATH=os.path.join(logs_path,LOG_FILE)
+
+  logging.basicConfig(
+    filename=LOG_FILE_PATH,
+    format="[ %(asctime)s ] %(lineno)d %(name)s - %(levelname)s -%(message)s",
+    level=logging.INFO,
+  )
+
+  ```
+   Similarly in networksecurity > exception, create a file named exception.py (we'll also import networksecurity > logging > logger here) and add the following logic
+```bash
+import sys
+from networksecurity.logging import logger
+
+class NetworkSecurityException(Exception):
+    def __init__(self,error_message,error_details:sys):
+        self.error_message = error_message
+        _,_,exc_tb = error_details.exc_info()
+        
+        self.lineno=exc_tb.tb_lineno
+        self.file_name=exc_tb.tb_frame.f_code.co_filename 
+    
+    def __str__(self):
+        return "Error occured in python script name [{0}] line number [{1}] error message [{2}]".format(
+        self.file_name, self.lineno, str(self.error_message))
+        
+if __name__=='__main__':
+    try:
+        logger.logging.info("Enter the try block")
+        a=1/0
+        print("This will not be printed",a)
+    except Exception as e:
+           raise NetworkSecurityException(e,sys)
+```
