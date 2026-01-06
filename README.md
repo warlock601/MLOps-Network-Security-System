@@ -35,5 +35,7 @@ Repository for building an end-to-end MLOps solution for a Network Security syst
   venv
   .env
   ```
-  
+
+- In all of the project structure folders given below, create __inti__.py file. Almost same structure is used in companies for MLOps workflow. </br>
+  <img width="222" height="200" alt="image" src="https://github.com/user-attachments/assets/27c492de-7526-4b80-b755-af6f6bd3e960" />
 
