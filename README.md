@@ -164,9 +164,32 @@ __ETL__ : The data source can be local, APIs, S3 bucket, Paid APIs, multiple sou
 
 - We will be creating an ETL Pipeline with MongoDB as destination. First create an account in MongoDB Atlas. </br>
   MongoDB Atlas is Database-as-a-Service (DBaaS) for MongoDB. MongoDB Atlas is a fully managed cloud database service provided by MongoDB that simplifies deploying, operating, and scaling MongoDB databases across major cloud providers. </br>
-  As soon as we setup MongoDB, it will ask to deploy the cluster.
+  As soon as we setup MongoDB, it will ask to deploy the cluster. pymongo is a library that allows connecgtion to MongoDB. 
   <img width="1764" height="742" alt="image" src="https://github.com/user-attachments/assets/19f16b06-be79-4a0f-abf4-451f77e416f4" />
   Then we create a DB user, choose connection method > Drivers, se;lect the Driver as Python and its version. Then we get a command to install the driver. Also we'll need to update the package in requirements.txt as well. If let say I selected Python as driver with verion 3.12 or later then in          requirements.txt we add
   ```bash
   pymongo[srv]==3.12
   ```
+  Once the cluster is created, we see something like this:</br>
+  <img width="1816" height="816" alt="image" src="https://github.com/user-attachments/assets/8f1fdb70-6f16-478f-bae0-02906c549f02" />
+
+
+- We need MongoDB connection-string. In Cluster Overview > Click on Connect > Drivers > View full code sample > uri will show the connection-string.  To get the password, in Security > QuickStart > Edit the password if you don't know. Now create a file named push_data.py in the root folder with the     following logic and replace with your password.
+```bash
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+uri = "mongodb+srv://vr32288_db_user:<db_password>@cluster0.hs5meio.mongodb.net/?appName=Cluster0"
+# Create a new client and connect to the server
+client = MongoClient(uri, server_api=ServerApi('1'))
+# Send a ping to confirm a successful connection
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
+```
+  When we run this script, we'll get this: </br>
+  <img width="532" height="46" alt="image" src="https://github.com/user-attachments/assets/73e10d15-37cc-4102-bc15-37df97faba3d" />
+
+
+- Inside .env file, add a key MONDO_DB_URL which will have the entire string as value. Now as we've tested push_data that is pushed data to MongoDB, we remove all the code that we pasted in push_data.py and put it in a different file which will be referenced later on. 
