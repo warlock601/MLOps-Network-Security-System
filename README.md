@@ -150,3 +150,6 @@ if __name__=='__main__':
     except Exception as e:
            raise NetworkSecurityException(e,sys)
 ```
+  After we run this exception.py, a folder will be created inside the "exception" folder which will store all the logs.
+  <img width="350" height="138" alt="image" src="https://github.com/user-attachments/assets/02b584f3-c59e-4c26-b893-2473c6c65789" />
+
