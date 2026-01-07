@@ -153,3 +153,10 @@ if __name__=='__main__':
   After we run this exception.py, a folder will be created inside the "exception" folder which will store all the logs.
   <img width="350" height="138" alt="image" src="https://github.com/user-attachments/assets/02b584f3-c59e-4c26-b893-2473c6c65789" />
 
+</br>
+</br>
+
+## Project Structure
+<img width="1596" height="494" alt="image" src="https://github.com/user-attachments/assets/89b87541-5b9a-4868-995e-854d2eb3cd22" />
+
+__ETL__ : The data source can be local, APIs, S3 bucket, Paid APIs, multiple sources etc. We need to combine this paticular data. This is called extraction. Now let say the data is in csv format, so we'll need to perform some basic preprocessing, clean raw data and then convert it into json format. This is called Transformation. After this we store the processesed data in the destination like MongoDB, DynamoDB, MySQL, S3 buckets etc. This is Loading.
