@@ -192,4 +192,81 @@ except Exception as e:
   <img width="532" height="46" alt="image" src="https://github.com/user-attachments/assets/73e10d15-37cc-4102-bc15-37df97faba3d" />
 
 
-- Inside .env file, add a key MONDO_DB_URL which will have the entire string as value. Now as we've tested push_data that is pushed data to MongoDB, we remove all the code that we pasted in push_data.py and put it in a different file which will be referenced later on. 
+- Inside .env file, add a key MONDO_DB_URL which will have the entire string as value. Now as we've tested push_data that is pushed data to MongoDB, we remove all the code that we pasted in push_data.py and put it in a different file which will be referenced later on.
+
+
+- ETL code will be put inside push_data.py. We'll import librarieslike "certifi" which provides a set of root certificates. It is used by python libraries that need to make a secure HTTP connection. where() function of certifi retreives the path to the bundle of   certificates provided by certifi and stores it in a particular variable. Like here we've used "ca". This is usually done for SSL or TLS connections to verfiy that the server you're connected to has a verified certificate. </br>
+  We'll also need to implementt logging & exception, so that will also be imported.
+- Let say we have a dataset and we have features like A,B,C. So how to insert this data in the form of JSON into MongoDB? In this cenario we convert every record in the form of list of JSON.
+  <img width="1094" height="646" alt="image" src="https://github.com/user-attachments/assets/dc0eaf81-8351-4eb7-b6cd-a6eee2005c4a" />
+```bash
+import os
+import sys
+import json
+
+from dotenv import load_dotenv
+load_dotenv()
+
+MONGO_DB_URL=os.getenv("MONGO_DB_URL")
+print(MONGO_DB_URL)
+
+import certifi
+ca=certifi.where()
+
+import pandas as pd
+import numpy as np
+import pymongo
+from networksecurity.exception.exception import NetworkSecurityException
+from networksecurity.logging.logger import logging
+
+class NetworkDataExtract():
+    def __init__(self):
+        try:
+            pass
+        except Exception as e:
+            raise NetworkSecurityException(e,sys)
+        
+    def csv_to_json_convertor(self,file_path):
+        try:
+            data=pd.read_csv(file_path)
+            data.reset_index(drop=True,inplace=True)
+            records=list(json.loads(data.T.to_json()).values())
+            return records
+        except Exception as e:
+            raise NetworkSecurityException(e,sys)
+        
+    def insert_data_mongodb(self,records,database,collection):
+        try:
+            self.database=database
+            self.collection=collection
+            self.records=records
+
+            self.mongo_client=pymongo.MongoClient(MONGO_DB_URL)
+            self.database = self.mongo_client[self.database]
+            
+            self.collection=self.database[self.collection]
+            self.collection.insert_many(self.records)
+            return(len(self.records))
+        except Exception as e:
+            raise NetworkSecurityException(e,sys)
+        
+if __name__=='__main__':
+    FILE_PATH="Network_Data/phisingData.csv"
+    DATABASE="vr32288"
+    Collection="NetworkData"
+    networkobj=NetworkDataExtract()
+    records=networkobj.csv_to_json_convertor(file_path=FILE_PATH)
+    print(records)
+    no_of_records=networkobj.insert_data_mongodb(records,DATABASE,Collection)
+    print(no_of_records)
+        
+
+
+
+
+```
+  When this script is ran, we'll get this kind of output which shows the csv data is converted to JSON.
+  <img width="1314" height="410" alt="image" src="https://github.com/user-attachments/assets/cd162f46-9445-4188-b5f6-af32d06c00be" />
+
+
+
