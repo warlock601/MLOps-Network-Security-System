@@ -160,3 +160,13 @@ if __name__=='__main__':
 <img width="1596" height="494" alt="image" src="https://github.com/user-attachments/assets/89b87541-5b9a-4868-995e-854d2eb3cd22" />
 
 __ETL__ : The data source can be local, APIs, S3 bucket, Paid APIs, multiple sources etc. We need to combine this paticular data. This is called extraction. Now let say the data is in csv format, so we'll need to perform some basic preprocessing, clean raw data and then convert it into json format. This is called Transformation. After this we store the processesed data in the destination like MongoDB, DynamoDB, MySQL, S3 buckets etc. This is Loading.
+
+
+- We will be creating an ETL Pipeline with MongoDB as destination. First create an account in MongoDB Atlas. </br>
+  MongoDB Atlas is Database-as-a-Service (DBaaS) for MongoDB. MongoDB Atlas is a fully managed cloud database service provided by MongoDB that simplifies deploying, operating, and scaling MongoDB databases across major cloud providers. </br>
+  As soon as we setup MongoDB, it will ask to deploy the cluster.
+  <img width="1764" height="742" alt="image" src="https://github.com/user-attachments/assets/19f16b06-be79-4a0f-abf4-451f77e416f4" />
+  Then we create a DB user, choose connection method > Drivers, se;lect the Driver as Python and its version. Then we get a command to install the driver. Also we'll need to update the package in requirements.txt as well. If let say I selected Python as driver with verion 3.12 or later then in          requirements.txt we add
+  ```bash
+  pymongo[srv]==3.12
+  ```
