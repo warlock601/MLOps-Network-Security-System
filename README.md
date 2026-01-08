@@ -269,4 +269,93 @@ if __name__=='__main__':
   <img width="1314" height="410" alt="image" src="https://github.com/user-attachments/assets/cd162f46-9445-4188-b5f6-af32d06c00be" />
 
 
+### Data Ingestion
+- Data Ingestion Config are some basic information where the dataset needs to get stored. All the basic info like Data Ingestion directory, feature store file path, training file path, testing file path, train test split ratio, collection name etc. are stored in   it.
+- Data will be exported to Feature Store, unnecessary feature drop.
+- Once we have all the info required for Data Ingestion, we will be reading data from MongoDB. Once we read this data, we will take the entire data as well as info from data ingestion config and convert it into Data Ingestion Artifact.
+- Using Data Ingestion Artifact, we will store raw csv data and also perform train-test split into test.csv and train.csv.
+  <img width="786" height="470" alt="image" src="https://github.com/user-attachments/assets/60382ae8-4ba2-40a6-97db-846492ca9013" />
 
+- In MongoDB Atlas, Click on Security > Database and Network Access > IP Address list. It will show: "Current IP Address not added. You will not be able to connect to databases from this address." Click on Add IP Address > 0.0.0.0/0 will be the IP.
+- For our setup, we have a Dtabase named "vr32288" and collection name "NetworkData".
+  <img width="932" height="324" alt="image" src="https://github.com/user-attachments/assets/457d8ec1-118f-440c-bbde-44a6fc17a39f" />
+
+- Inside components folder, create data_ingestion.py and inside entity folder, create config_entity.py and inside constant folder, create another folder called "training_pipeline" and inside that __init__.py file will be created.
+- In training_pipeline > __init__.py, we will write the Info required for Data Ingestion phase. Alognwith that we'll also define some common constant variables. These common constant variables like what out train file should be etc. 
+```bash
+import os
+import sys
+import numpy as np
+import pandas as pd
+
+"""
+defining common constant variable for training pipeline
+"""
+TARGET_COLUMN = "Result"
+PIPELINE_NAME: str = "NetworkSecurity"
+ARTIFACT_DIR: str = "Artifacts"
+FILE_NAME: str = "phisingData.csv"
+
+TRAIN_FILE_NAME: str = "train.csv"
+TEST_FILE_NAME: str = "test.csv"
+
+SCHEMA_FILE_PATH = os.path.join("data_schema", "schema.yaml")
+
+SAVED_MODEL_DIR =os.path.join("saved_models")
+MODEL_FILE_NAME = "model.pkl"
+
+
+
+
+"""
+Data Ingestion related constant start with DATA_INGESTION VAR NAME
+"""
+DATA_INGESTION_COLLECTION_NAME: str = "NetworkData"
+DATA_INGESTION_DATABASE_NAME: str = "vr32288"
+DATA_INGESTION_DIR_NAME: str = "data_ingestion"
+DATA_INGESTION_FEATURE_STORE_DIR: str = "feature_store"
+DATA_INGESTION_INGESTED_DIR: str = "ingested"
+DATA_INGESTION_TRAIN_TEST_SPLIT_RATION: float = 0.2  
+```
+
+
+- Now we'll update the data ingestion config in config_entity.py. All the constants that we specified in training_pipeline __init__.py, these values will be read from __init__.py and assigned in config_entity.py.
+```bash
+from datetime import datetime
+import os
+from networksecurity.constant import training_pipeline
+
+print(training_pipeline.PIPELINE_NAME)
+print(training_pipeline.ARTIFACT_DIR)
+
+
+class TrainingPipelineConfig:
+    def __init__(self,timestamp=datetime.now()):
+        timestamp=timestamp.strftime("%m_%d_%Y_%H_%M_%S")
+        self.pipeline_name=training_pipeline.PIPELINE_NAME
+        self.artifact_name=training_pipeline.ARTIFACT_DIR
+        self.artifact_dir=os.path.join(self.artifact_name,timestamp)
+        self.model_dir=os.path.join("final_model")
+        self.timestamp: str=timestamp
+
+
+
+class DataIngestionConfig:
+    def __init__(self,training_pipeline_config:TrainingPipelineConfig):
+        self.data_ingestion_dir:str=os.path.join(
+            training_pipeline_config.artifact_dir,training_pipeline.DATA_INGESTION_DIR_NAME
+        )
+        self.feature_store_file_path: str = os.path.join(
+                self.data_ingestion_dir, training_pipeline.DATA_INGESTION_FEATURE_STORE_DIR, training_pipeline.FILE_NAME
+            )
+        self.training_file_path: str = os.path.join(
+                self.data_ingestion_dir, training_pipeline.DATA_INGESTION_INGESTED_DIR, training_pipeline.TRAIN_FILE_NAME
+            )
+        self.testing_file_path: str = os.path.join(
+                self.data_ingestion_dir, training_pipeline.DATA_INGESTION_INGESTED_DIR, training_pipeline.TEST_FILE_NAME
+            )
+        self.train_test_split_ratio: float = training_pipeline.DATA_INGESTION_TRAIN_TEST_SPLIT_RATION
+        self.collection_name: str = training_pipeline.DATA_INGESTION_COLLECTION_NAME
+        self.database_name: str = training_pipeline.DATA_INGESTION_DATABASE_NAME
+
+```
