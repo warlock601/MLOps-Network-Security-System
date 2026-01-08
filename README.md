@@ -423,5 +423,21 @@ if __name__=='__main__':
 ```
 
 ### Data Validation
-- After we read data from MongoDB, the most important thing is my Database schema should not be changed. Let say if we have 10 features in our dataset, those 10 features should always be there. Let say in one of the features, data is following Normal distribution but after sometime what can happen is this data may change its feature to some other kind of distribution like Left-skewed or right-skewed, this is called Data Drift. And if there is data drift, you cannot use the same data to train the model because there will be a huge difference. We should create something called as Data Drift report. 
+- After we read data from MongoDB, the most important thing is my Database schema should not be changed. Let say if we have 10 features in our dataset, those 10 features should always be there. Let say in one of the features, data is following Normal distribution but after sometime what can happen is   this data may change its feature to some other kind of distribution like Left-skewed or right-skewed, this is called Data Drift. And if there is data drift, you cannot use the same data to train the model because there will be a huge difference. We should create something called as Data Drift         report.
+- Basically a function called "Detect Dataset Drift" will be created to check the distribution and if the Drift Status is false, this means that the distribution or the data is almost similar so from there we will generate a report.yaml file and alongwith that these things will be returned:             Validation status, valid train file path, valid test file path, invalid train file path, invalid test file path, drift report file path.
+- Report.yaml will be shared inside the Artifacts folder where we will have another folder called Data Validation.
 <img width="1058" height="718" alt="image" src="https://github.com/user-attachments/assets/31bff48c-9e1a-4bf0-bf23-88f87bd28d7b" />
+
+
+- In __init__.py all the constants that are required for Data Validation will be defined. 
+```bash
+Data Validation related constant start with DATA_VALIDATION VAR NAME
+"""
+DATA_VALIDATION_DIR_NAME: str = "data_validation"
+DATA_VALIDATION_VALID_DIR: str = "validated"
+DATA_VALIDATION_INVALID_DIR: str = "invalid"
+DATA_VALIDATION_DRIFT_REPORT_DIR: str = "drift_report"
+DATA_VALIDATION_DRIFT_REPORT_FILE_NAME: str = "report.yaml"
+PREPROCESSING_OBJECT_FILE_NAME = "preprocessing.pkl"
+```
+
