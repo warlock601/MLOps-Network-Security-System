@@ -422,3 +422,6 @@ if __name__=='__main__':
            raise NetworkSecurityException(e,sys)
 ```
 
+### Data Validation
+- After we read data from MongoDB, the most important thing is my Database schema should not be changed. Let say if we have 10 features in our dataset, those 10 features should always be there. Let say in one of the features, data is following Normal distribution but after sometime what can happen is this data may change its feature to some other kind of distribution like Left-skewed or right-skewed, this is called Data Drift. And if there is data drift, you cannot use the same data to train the model because there will be a huge difference. We should create something called as Data Drift report. 
+<img width="1058" height="718" alt="image" src="https://github.com/user-attachments/assets/31bff48c-9e1a-4bf0-bf23-88f87bd28d7b" />
