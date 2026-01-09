@@ -585,4 +585,29 @@ PREPROCESSING_OBJECT_FILE_NAME = "preprocessing.pkl"
 ```
 
 - In __inti__.py, we have a field called schema_file_path, where we will pass our schema.yaml file.</br>
-  Why this schema.yaml file is created?   If we see our dataset, we need to compare our schema basically we need to see how many number of columns are there. Through this we will be able to validate the entire datatset itself. It will be in the form of key-value pairs of input features. We can do it    programatically but I have done it manually.
+  Why this schema.yaml file is created?   If we see our dataset, we need to compare our schema basically we need to see how many number of columns are there. Through this we will be able to validate the entire datatset itself. It will be in the form of key-value pairs of input features. We can do it    programatically but I have done it manually. </br>
+  In data_validation.py we will be reading this particular schema. If the comparison is successful, then as per the architecture graph, Train Status is set to True (it indicates that columns are not missing in the test data frame).
+```bash
+import yaml
+from networksecurity.exception.exception import NetworkSecurityException
+from networksecurity.logging.logger import logging
+import os,sys
+import numpy as np
+#import dill
+import pickle
+
+from sklearn.metrics import r2_score
+from sklearn.model_selection import GridSearchCV
+
+def read_yaml_file(file_path: str) -> dict:
+    try:
+        with open(file_path, "rb") as yaml_file:
+            return yaml.safe_load(yaml_file)
+    except Exception as e:
+        raise NetworkSecurityException(e, sys) from e
+```
+
+
+- In networksecurity folder > Utils folder > create a new folder "main_utils" > create 2 files "__init__.py" & "utils.py".
+
+- In requirements.txt add "dill" which will be used for pickeling our files & "pyaml". Then do "pip install -r requirements.txt"
