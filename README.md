@@ -441,7 +441,8 @@ DATA_VALIDATION_DRIFT_REPORT_FILE_NAME: str = "report.yaml"
 PREPROCESSING_OBJECT_FILE_NAME = "preprocessing.pkl"
 ```
 
-- Create data_validation.py in "components" folder.
+- Create data_validation.py in "components" folder. </br>
+  DataValidation class will be created which will have functions for validating the number of columns, detecting dataset drift and initiating of data validation. 
 ```bash
 from networksecurity.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact
 from networksecurity.entity.config_entity import DataValidationConfig
@@ -611,3 +612,8 @@ def read_yaml_file(file_path: str) -> dict:
 - In networksecurity folder > Utils folder > create a new folder "main_utils" > create 2 files "__init__.py" & "utils.py".
 
 - In requirements.txt add "dill" which will be used for pickeling our files & "pyaml". Then do "pip install -r requirements.txt"
+
+
+### Data Transformation
+<img width="742" height="628" alt="image" src="https://github.com/user-attachments/assets/6f1ae297-37f3-45f1-bcc8-35e12e29c039" />
+
