@@ -634,3 +634,13 @@ Let say in our dataset we have features like f1, f2 which have values like 10, 2
 <img width="534" height="148" alt="image" src="https://github.com/user-attachments/assets/427f6d90-0842-4960-add3-306e8106692f" /> </br>
 <img width="454" height="216" alt="image" src="https://github.com/user-attachments/assets/e1a705e6-e52b-4828-8eba-b37d189f534c" />
 
+
+
+
+
+### Model Trainer
+<img width="1204" height="1240" alt="image" src="https://github.com/user-attachments/assets/e26e841c-f263-4746-b275-5dc972d5e4b2" />
+
+- For the Model Trainer config, we need model trainer dir (directory where we'll save our model), trained model file path, expected accuracy & model config file path. We'll be taking data for intiating Model Trainer from Data Transformation Artifact.
+- After training models, we will compare the best score and if it less than expected accuracy then No best model found with score more than best score otherwise we'll take the best score and convert it into Pickle file.
+- Then we add class for Modelo trainer in artifact_entity, config_entity, __inti__.py
