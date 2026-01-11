@@ -626,3 +626,11 @@ def read_yaml_file(file_path: str) -> dict:
 - In config_entity.py, add a class for DataTransformationConfig just like we did for Ingestion & Validation. Similarly we will provide values for the configuration variables.
 
 - In Components folder, created a file named data_transformation.py where all the logic for Data transformation is added.
+
+
+#### KNN Imputer and what exactly it is?
+Let say in our dataset we have features like f1, f2 which have values like 10, 20.... If we plot the points given below, we will not know where to put the third point. There will be a question like what we should replace NP.NaN with? KNN Imputer will find the nearest 3 points and then it is going to calculate the average. Once it calculates the average, we will get the third point.
+
+<img width="534" height="148" alt="image" src="https://github.com/user-attachments/assets/427f6d90-0842-4960-add3-306e8106692f" /> </br>
+<img width="454" height="216" alt="image" src="https://github.com/user-attachments/assets/e1a705e6-e52b-4828-8eba-b37d189f534c" />
+
