@@ -617,3 +617,12 @@ def read_yaml_file(file_path: str) -> dict:
 ### Data Transformation
 <img width="742" height="628" alt="image" src="https://github.com/user-attachments/assets/6f1ae297-37f3-45f1-bcc8-35e12e29c039" />
 
+- First we create Data Transformation config, in that we will have all the info such as data validation dir, valid data dir, invalid data dir, valid train file path etc. These values will be coming from Data Validation artifacts from the previous stage.
+- From the Data Validation Artifact all the Train & Test data will be read. From Train DataFrame, we'll drop Target column. Then we can combine this and create Input Feature Train Array. SMOTETomek (it is a feature engineering technique) is used to        balancer imbalanced data set. There are some   NaN values in Train DataFrame and we'll try to replace them and for that we're goingto use an Imputer technique like Robust Scaler, Simple Imputer.
+- After this we get a Preprocessor Object in the form of preprocessing.pkl, then using this object we can apply to Test data.
+- At last in data Transformation, we'll perform concatenation of Train and Test Array to form the Data Transformation Artifact (artifact file in the form of NumPy array).
+- 3 main components that we want outside of Data Transformation are: transform_object_file_path, transformed_train_file_path, transformed_test_file_path. 
+
+- In config_entity.py, add a class for DataTransformationConfig just like we did for Ingestion & Validation. Similarly we will provide values for the configuration variables.
+
+- In Components folder, created a file named data_transformation.py where all the logic for Data transformation is added.
