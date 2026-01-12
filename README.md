@@ -647,6 +647,39 @@ Let say in our dataset we have features like f1, f2 which have values like 10, 2
 - You can see that we have created __init__.py files inside multiple folders inside utils or any other folder. This is done so that folder can be considered as a package.
 - Inside ml_utils folder we create 2 more folders called "metric" & "model" where metric will have all the metrics details and inside both of them we create __init__.py so that they will be teated as apackage.
 
+- This is the logic that we'll be using for evaluating the models and then we;ll pass the parameters to get the best model.
+```bash
+def evaluate_models(X_train, y_train,X_test,y_test,models,param):
+    try:
+        report = {}
+
+        for i in range(len(list(models))):
+            model = list(models.values())[i]
+            para=param[list(models.keys())[i]]
+
+            gs = GridSearchCV(model,para,cv=3)
+            gs.fit(X_train,y_train)
+
+            model.set_params(**gs.best_params_)
+            model.fit(X_train,y_train)
+
+            #model.fit(X_train, y_train)  # Train model
+
+            y_train_pred = model.predict(X_train)
+
+            y_test_pred = model.predict(X_test)
+
+            train_model_score = r2_score(y_train, y_train_pred)
+
+            test_model_score = r2_score(y_test, y_test_pred)
+
+            report[list(models.keys())[i]] = test_model_score
+
+        return report
+
+    except Exception as e:
+        raise NetworkSecurityException(e, sys)
+```
 ```bash
 def train_model(self,X_train,y_train,x_test,y_test):
         models = {
@@ -683,3 +716,22 @@ def train_model(self,X_train,y_train,x_test,y_test):
             }
 ```
 This is the train_model function in which we have specified the parameters and algorithms to be used.
+
+- For Model Report, a dictionary will be formed and then we will take the best model score (using the max function and then store it in a variable), name. Then predicted labels on the training data using the best-performing model are generated. Then we    evaluate how well the model performed on the training dataset and stores the resulting metric(s) in classification_train_metric
+```bash
+model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=x_test,y_test=y_test,
+                                          models=models,param=params)
+        
+        ## To get best model score from dict
+        best_model_score = max(sorted(model_report.values()))
+
+        ## To get best model name from dict
+
+        best_model_name = list(model_report.keys())[
+            list(model_report.values()).index(best_model_score)
+        ]
+        best_model = models[best_model_name]
+        y_train_pred=best_model.predict(X_train)
+
+        classification_train_metric=get_classification_score(y_true=y_train,y_pred=y_train_pred)
+``` 
