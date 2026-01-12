@@ -644,3 +644,42 @@ Let say in our dataset we have features like f1, f2 which have values like 10, 2
 - For the Model Trainer config, we need model trainer dir (directory where we'll save our model), trained model file path, expected accuracy & model config file path. We'll be taking data for intiating Model Trainer from Data Transformation Artifact.
 - After training models, we will compare the best score and if it less than expected accuracy then No best model found with score more than best score otherwise we'll take the best score and convert it into Pickle file.
 - Then we add class for Modelo trainer in artifact_entity, config_entity, __inti__.py
+- You can see that we have created __init__.py files inside multiple folders inside utils or any other folder. This is done so that folder can be considered as a package.
+- Inside ml_utils folder we create 2 more folders called "metric" & "model" where metric will have all the metrics details and inside both of them we create __init__.py so that they will be teated as apackage.
+
+```bash
+def train_model(self,X_train,y_train,x_test,y_test):
+        models = {
+                "Random Forest": RandomForestClassifier(verbose=1),
+                "Decision Tree": DecisionTreeClassifier(),
+                "Gradient Boosting": GradientBoostingClassifier(verbose=1),
+                "Logistic Regression": LogisticRegression(verbose=1),
+                "AdaBoost": AdaBoostClassifier(),
+            }
+        params={
+            "Decision Tree": {
+                'criterion':['gini', 'entropy', 'log_loss'],
+                # 'splitter':['best','random'],
+                # 'max_features':['sqrt','log2'],
+            },
+            "Random Forest":{
+                # 'criterion':['gini', 'entropy', 'log_loss'],
+                
+                # 'max_features':['sqrt','log2',None],
+                'n_estimators': [8,16,32,128,256]
+            },
+            "Gradient Boosting":{
+                # 'loss':['log_loss', 'exponential'],
+                'learning_rate':[.1,.01,.05,.001],
+                'subsample':[0.6,0.7,0.75,0.85,0.9],
+                # 'criterion':['squared_error', 'friedman_mse'],
+                # 'max_features':['auto','sqrt','log2'],
+                'n_estimators': [8,16,32,64,128,256]
+            },
+            "Logistic Regression":{},
+            "AdaBoost":{
+                'learning_rate':[.1,.01,.001],
+                'n_estimators': [8,16,32,64,128,256]
+            }
+```
+This is the train_model function in which we have specified the parameters and algorithms to be used.
