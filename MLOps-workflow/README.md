@@ -3,6 +3,16 @@
 - First in requirements.txt, we'll add mlflow & dagshub so that these will be installed and then imported. Once we get the best model, for that best model whatever classification metrics we get, we need to make sure that we track the entire thing in MLFlow. We will create track_mlflow function, which    will be called in model_trainer. We will pass the best_model, classificationmetric as arguments which will have precision_score, f2_score, recall_score.
 - To log the metric, __mlflow.log_metric will be used to log the metrics in experiments__ where we specify the metrics like f1_score, precision_score, recall_score etc.
 - __mlflow.sklearn.log_model(best_model,"model")__ is used to log the best model.
+- In track_mlflow function that will be defined in model_trainer.py, Remote Repository DagsHub details will be placed. If we don't specify that, experiments will be tracked locally.
+- Go to DagsHub, New Repository > Connect a Repository > Github > Autborize DagsHub > Choose the Repository > Connect Repo. Then we'll be able to see the repo in Dagshub.
+  <img width="1892" height="716" alt="image" src="https://github.com/user-attachments/assets/91945ff1-6313-4677-8c5f-366acde28fcb" />
+
+- In the repo, click Remote > Experiments > there will be commands given like this:
+  ```bash
+  import dagshub
+  dagshub.init(repo_owner='vr32288', repo_name='MLOps-Network-Security-System', mlflow=True)
+  ```
+
 ```bash
 def track_mlflow(self,best_model,classificationmetric):
         mlflow.set_registry_uri("https://dagshub.com/krishnaik06/networksecurity.mlflow")
